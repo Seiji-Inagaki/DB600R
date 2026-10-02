@@ -1,3 +1,5 @@
 mainsail.cfg
 timelapse.cfg
 printer-*
+.moonraker.conf.bkp
+*.zip
