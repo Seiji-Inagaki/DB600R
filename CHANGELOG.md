@@ -11,15 +11,16 @@ Versioning rules:
 - **1.0.x** (e.g. 1.0 → 1.0.1): a correction of hand-set values, or comments only.
 - Calibration values (probe `z_offset`, heater PID, bed mesh) are written by `SAVE_CONFIG` into the block at the end of `printer.cfg`. They are measured, not hand-set, and **re-calibration does not change the version**. The values at each release are noted in this file for comparison.
 
-## 0.9 — 2026-10-04 (testing)
+## 0.9 — 2026-10-21 (testing)
 
-The filament sensor test during a print is still to be done.
+Not released yet. Version 1.0 waits for hotend fan stop detection by tachometer (an FG fan is on order).
 
 Coordinates (the toolhead mount was moved on the carriage; all values measured again):
 
 - `[z_tilt] z_positions`: `690, 305` / `-125, 305` → **`700, 305` / `-100, 305`**.
 - `[stepper_y] position_max`: 615 → **588**. With the current toolhead, the carriage hits the rear end at about Y = 590.
 - `clean_nozzle.cfg`: `variable_start_x` 17 → **37** (brush center).
+- `[stepper_z] position_max`: 525 → **540**. The nozzle is 12 mm higher with the current toolhead mount. The Z limit itself is set by the alignment of the linear shafts and bushings and did not change.
 
 Bed leveling:
 
@@ -29,7 +30,14 @@ Bed leveling:
 Extruder:
 
 - `[extruder] dir_pin`: `!PD6` → **`PD6`**. The extruder turned in the retract direction.
-- `[extruder] rotation_distance`: 47.088 → **48.030** (100 mm commanded, measured with PETG).
+- `[extruder] rotation_distance`: 47.088 → 48.030 → **46.95** (100 mm commanded, measured with PETG; re-measured after fixing the PTFE tube length to the Galileo 2 spec of 30 mm).
+- `[tmc2209 extruder] run_current`: 0.9 → **0.7** (the Galileo 2 manual specifies 0.6 A).
+
+Filament sensors:
+
+- `[filament_motion_sensor encoder_sensor] detection_length`: 3.0 → **8.64** (3 encoder steps, larger than the 3 mm retraction).
+- Added `SFS_ENABLE` / `SFS_DISABLE` and `[delayed_gcode SFS_INIT]`: both sensors are active only during a print.
+- The SFS was replaced with a new unit. `SFS_ENABLE` enables both sensors.
 
 Calibration, written by `SAVE_CONFIG` (the starting values carried over from the Leviathan were removed from the body):
 
